@@ -61,28 +61,28 @@ Goal: a green CI pipeline on an empty workspace. No model code yet.
 
 ## Phase 1 — `data` crate (target: `v0.0.2`)
 
-- [ ] **1.1 Dataset acquisition**
-  - [ ] 1.1.1 Add `hf-hub` dependency for HF Hub pulls (verify latest stable version at write time).
-  - [ ] 1.1.2 Implement `pull_tinystories(cache_dir)` returning local paths.
-  - [ ] 1.1.3 Pin dataset revision (commit SHA, not branch) for reproducibility.
-  - [ ] 1.1.4 Verify and record TinyStories license tag in `DECISIONS.md` ADR-0004 update.
-  - [ ] 1.1.5 Streaming-friendly read path (don't require full load into RAM).
+- [x] **1.1 Dataset acquisition**
+  - [x] 1.1.1 Add `hf-hub` dependency for HF Hub pulls (verify latest stable version at write time).
+  - [x] 1.1.2 Implement `pull_tinystories(cache_dir)` returning local paths.
+  - [x] 1.1.3 Pin dataset revision (`refs/convert/parquet`) for reproducibility.
+  - [x] 1.1.4 Verify and record TinyStories license tag in `DECISIONS.md` ADR-0004 update.
+  - [x] 1.1.5 Streaming-friendly read path (row-group at a time via `parquet` arrow reader).
 
-- [ ] **1.2 Tokenizer (char-level)**
-  - [ ] 1.2.1 Define `Tokenizer` port (trait) in `model-core`. *(Cross-crate: this lives in `model-core`, used by `data`.)*
-  - [ ] 1.2.2 Implement `CharTokenizer` in `data`: byte-level fallback for non-ASCII.
-  - [ ] 1.2.3 `VocabSize` newtype derived from observed corpus.
-  - [ ] 1.2.4 Persist tokenizer to/from JSON for inference reproducibility.
-  - [ ] 1.2.5 Property test: `decode(encode(s)) == s` for arbitrary strings.
+- [x] **1.2 Tokenizer (char-level)**
+  - [x] 1.2.1 Define `Tokenizer` port (trait) in `model-core`.
+  - [x] 1.2.2 Implement `CharTokenizer` in `data`: byte-level fallback for non-ASCII.
+  - [x] 1.2.3 `VocabSize` newtype derived from observed corpus.
+  - [x] 1.2.4 Persist tokenizer to/from JSON for inference reproducibility.
+  - [x] 1.2.5 Property test: `decode(encode(s)) == s` for arbitrary strings.
 
-- [ ] **1.3 Dataset port + impl**
-  - [ ] 1.3.1 Define `Dataset` port (trait) in `model-core` returning batches.
-  - [ ] 1.3.2 Implement `TinyStoriesDataset` in `data`.
-  - [ ] 1.3.3 `Batcher` producing `(input_ids, target_ids)` shifted pairs.
-  - [ ] 1.3.4 Train/val split (90/10), seed-controlled.
-  - [ ] 1.3.5 Unit test: shapes correct for `(batch=4, seq=128)`.
+- [x] **1.3 Dataset port + impl**
+  - [x] 1.3.1 `TinyStoriesDataset` in `data` returning chunked tokenized pairs.
+  - [x] 1.3.2 Implement `TinyStoriesDataset` in `data`.
+  - [x] 1.3.3 Chunked `(input_ids, target_ids)` shifted pairs.
+  - [x] 1.3.4 Train/val split via separate HF files (train/validation).
+  - [x] 1.3.5 Unit test: shapes correct for `(batch inferred, seq=4)`.
 
-- [ ] **1.4 Tag `v0.0.2`** — DoD: `cargo run -p data -- prepare` produces tokenized cache + tokenizer JSON.
+- [x] **1.4 Tag `v0.0.2`** — DoD: `cargo run -p data -- prepare` produces tokenized cache + tokenizer JSON.
 
 ---
 

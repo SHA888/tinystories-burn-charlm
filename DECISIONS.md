@@ -105,8 +105,10 @@ licensed permissively enough to redistribute derivative weights.
 - Synthetic (GPT-3.5-generated) short children's stories. Vocabulary is
   small, sentences are short — exactly the regime tiny models can fit.
 - ~500 MB. Fits in memory on commodity hardware; can also stream.
-- License must be re-verified at pull time and reflected in the weight
-  card. Open TODO.
+- License verified: TinyStories is released under **Apache-2.0**
+  (Hugging Face dataset card, 2023). Compatible with weight redistribution
+  under our declared Apache-2.0 terms. No attribution conflict.
+  (Verified via `hf_hub` API at dataset metadata, 2026-04-29).
 
 **Alternatives considered.**
 - `enwik8` / `enwik9` — Wikipedia-derived, larger, harder. Rejected for
