@@ -55,7 +55,7 @@ Goal: a green CI pipeline on an empty workspace. No model code yet.
   - [x] 0.6.3 `rustfmt.toml` — `edition = "2021"`, otherwise stdlib defaults.
   - [x] 0.6.4 `.cargo/config.toml` if any custom alias/profile needed (defer if not).
 
-- [ ] **0.7 Tag `v0.0.1`** — DoD: empty workspace builds clean, CI is green.
+- [x] **0.7 Tag `v0.0.1`** — DoD: empty workspace builds clean, CI is green.
 
 ---
 
