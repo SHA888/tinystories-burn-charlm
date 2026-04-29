@@ -33,10 +33,16 @@ impl From<parquet::errors::ParquetError> for DatasetError {
 
 impl From<arrow_schema::ArrowError> for DatasetError {
     fn from(e: arrow_schema::ArrowError) -> Self {
-        DatasetError::Io(std::io::Error::new(std::io::ErrorKind::Other, e))
+        DatasetError::Io(std::io::Error::other(e))
     }
 }
 
+/// Read all text stories from a Parquet file incrementally (row-group at a time).
+///
+/// # Errors
+///
+/// Returns `DatasetError` on IO failure, Parquet/Arrow parse errors, or a missing
+/// / wrong-type `"text"` column.
 pub fn read_texts_from_parquet(path: &Path) -> Result<Vec<String>, DatasetError> {
     let file = std::fs::File::open(path)?;
     let builder = parquet::arrow::arrow_reader::ParquetRecordBatchReaderBuilder::try_new(file)?;
@@ -79,11 +85,12 @@ impl TinyStoriesDataset {
         let chunks: Vec<Vec<u32>> = all_ids
             .chunks(chunk_size)
             .filter(|c| c.len() == chunk_size)
-            .map(|c| c.to_vec())
+            .map(std::vec::Vec::from)
             .collect();
         Self { chunks }
     }
 
+    #[must_use]
     pub fn get_pair(&self, index: usize) -> Option<(Vec<u32>, Vec<u32>)> {
         self.chunks.get(index).map(|chunk| {
             let input = chunk[..chunk.len() - 1].to_vec();
@@ -92,8 +99,14 @@ impl TinyStoriesDataset {
         })
     }
 
+    #[must_use]
     pub fn len(&self) -> usize {
         self.chunks.len()
+    }
+
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        self.chunks.is_empty()
     }
 }
 
@@ -107,7 +120,8 @@ mod tests {
         let tok = CharTokenizer::from_corpus(["abc", "bcd", "cde", "def"].iter().copied());
         let texts: Vec<String> = ["abc", "bcd", "cde", "def"]
             .iter()
-            .map(|s| s.to_string())
+            .copied()
+            .map(String::from)
             .collect();
         let ds = TinyStoriesDataset::from_texts(texts, &tok, 4);
         assert_eq!(ds.len(), 3);

@@ -38,6 +38,10 @@ impl CharTokenizer {
     }
 
     /// Persist tokenizer to JSON at the given path.
+    ///
+    /// # Errors
+    ///
+    /// Propagates `std::io::Error` from file creation or JSON serialization.
     pub fn save(&self, path: &std::path::Path) -> std::io::Result<()> {
         let file = std::fs::File::create(path)?;
         serde_json::to_writer_pretty(file, self)?;
@@ -45,6 +49,10 @@ impl CharTokenizer {
     }
 
     /// Load tokenizer from JSON at the given path.
+    ///
+    /// # Errors
+    ///
+    /// Propagates `std::io::Error` from file opening or JSON deserialization.
     pub fn load(path: &std::path::Path) -> std::io::Result<Self> {
         let file = std::fs::File::open(path)?;
         let tokenizer = serde_json::from_reader(file)?;

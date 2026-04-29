@@ -18,11 +18,15 @@ fn main() {
     println!("Downloading TinyStories dataset...");
     let (train_path, val_path) =
         data::download::pull_tinystories(&cache_dir).expect("download dataset");
-    println!("Train: {train_path:?}\nVal:   {val_path:?}");
+    println!(
+        "Train: {}\nVal:   {}",
+        train_path.display(),
+        val_path.display()
+    );
 
     println!("Building tokenizer from train split...");
     let texts = data::dataset::read_texts_from_parquet(&train_path).expect("read train parquet");
-    let tokenizer = data::tokenizer::CharTokenizer::from_corpus(texts.iter().map(|s| s.as_str()));
+    let tokenizer = data::tokenizer::CharTokenizer::from_corpus(texts.iter().map(String::as_str));
     tokenizer.save(&tokenizer_path).expect("save tokenizer");
     println!("Tokenizer vocab size: {}", tokenizer.vocab_size().0);
 
@@ -38,7 +42,7 @@ fn main() {
     // Persist tokenized chunks as raw u32 bytes for fast loading.
     save_u32_bin(&train_ds, &train_cache).expect("save train cache");
     save_u32_bin(&val_ds, &val_cache).expect("save val cache");
-    println!("Done. Cache written to {cache_dir:?}");
+    println!("Done. Cache written to {}", cache_dir.display());
 }
 
 fn save_u32_bin(
