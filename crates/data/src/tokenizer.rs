@@ -27,7 +27,7 @@ impl CharTokenizer {
                 }
                 char_to_id.insert(ch, next_id);
                 id_to_char.insert(next_id, ch);
-                next_id += 1;
+                next_id = next_id.checked_add(1).expect("vocab size exceeds u32::MAX");
             }
         }
 
@@ -105,13 +105,15 @@ mod tests {
 
     #[test]
     fn save_load_roundtrip() {
+        use tempfile::NamedTempFile;
         let corpus = ["rust", "burn"];
         let tok = CharTokenizer::from_corpus(corpus.iter().copied());
-        let tmp = std::env::temp_dir().join("test_tokenizer.json");
-        tok.save(&tmp).unwrap();
-        let loaded = CharTokenizer::load(&tmp).unwrap();
+        let tmp = NamedTempFile::new().expect("create temp file");
+        let path = tmp.path();
+        tok.save(path).unwrap();
+        let loaded = CharTokenizer::load(path).unwrap();
         assert_eq!(tok.vocab_size(), loaded.vocab_size());
         assert_eq!(tok.encode("rust"), loaded.encode("rust"));
-        std::fs::remove_file(&tmp).unwrap();
+        // File is automatically cleaned up when `tmp` is dropped
     }
 }
