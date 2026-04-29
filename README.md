@@ -4,9 +4,9 @@ Character-level transformer language model in Rust, trained end-to-end on a
 single CPU using [Burn], on the [TinyStories] dataset, with the resulting
 weights published as a `safetensors` artifact on the Hugging Face Hub.
 
-> **Status:** `0.0.0` — pre-code scaffold. No training has run, no weights
-> exist, nothing is published yet. See [`TODO.md`](./TODO.md) for the path
-> to `0.1.0`.
+> **Status:** `v0.0.1` — Phase 0 complete. Workspace skeleton builds clean,
+> CI configured, no model code yet. See [`TODO.md`](./TODO.md) for the path
+> to `v0.1.0`.
 
 ## Why this exists
 
