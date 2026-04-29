@@ -39,7 +39,7 @@ Goal: a green CI pipeline on an empty workspace. No model code yet.
 - [x] **0.4 Tooling install script**
   - [x] 0.4.1 `scripts/setup.sh` that runs `cargo install cargo-skill cargo-semver-checks cargo-deny cargo-audit cargo-machete cargo-nextest`.
   - [x] 0.4.2 Document MSRV in `README.md` and `rust-toolchain.toml`.
-  - [x] 0.4.3 Pre-commit hook (`.githooks/pre-commit`) running `fmt + clippy + nextest`.
+  - [x] 0.4.3 Pre-commit hook running `fmt + clippy + nextest`.
 
 - [x] **0.5 CI pipeline (GitHub Actions)**
   - [x] 0.5.1 `.github/workflows/ci.yml` jobs: `fmt`, `clippy`, `test`, `doc`.

@@ -11,4 +11,10 @@ cargo install cargo-audit --locked
 cargo install cargo-machete
 cargo install cargo-nextest || echo "cargo-nextest failed (will use cargo test fallback)"
 
+echo ""
+echo "Installing pre-commit framework..."
+echo "  pip install pre-commit"
+echo "  pre-commit install"
+echo "  pre-commit install --hook-type pre-push"
+
 echo "Done."
