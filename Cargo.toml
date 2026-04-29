@@ -1,0 +1,16 @@
+[workspace]
+members = ["crates/*"]
+resolver = "2"
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/SHA888/tinystories-burn-charlm"
+rust-version = "1.89"
+
+[workspace.lints.clippy]
+pedantic = "warn"
+
+[workspace.dependencies]
+burn = { version = "0.20.1", default-features = false }
