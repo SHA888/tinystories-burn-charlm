@@ -52,8 +52,14 @@ pub fn read_texts_from_parquet(path: &Path) -> Result<Vec<String>, DatasetError>
         .iter()
         .position(|f| f.name() == "text")
         .ok_or_else(|| {
-            let available: Vec<_> = schema.fields().iter().map(|f| f.name().to_string()).collect();
-            eprintln!("Error: Parquet file missing 'text' column. Available columns: {:?}", available);
+            let available: Vec<_> = schema
+                .fields()
+                .iter()
+                .map(|f| f.name().to_string())
+                .collect();
+            eprintln!(
+                "Error: Parquet file missing 'text' column. Available columns: {available:?}"
+            );
             DatasetError::MissingTextColumn
         })?;
     let mut texts = Vec::new();
@@ -79,6 +85,9 @@ pub struct TinyStoriesDataset {
 }
 
 impl TinyStoriesDataset {
+    /// # Panics
+    ///
+    /// Panics if `seq_len` is 0.
     pub fn from_texts(texts: Vec<String>, tokenizer: &impl Tokenizer, seq_len: usize) -> Self {
         assert!(seq_len > 0, "seq_len must be > 0");
         let mut all_ids: Vec<u32> = Vec::new();
@@ -96,8 +105,8 @@ impl TinyStoriesDataset {
         let kept_tokens = chunks.len() * chunk_size;
         let dropped_tokens = total_tokens - kept_tokens;
         if dropped_tokens > 0 {
-            eprintln!("Warning: dropped {dropped_tokens} tokens ({:.1}% of data) due to incomplete final chunk",
-                100.0 * dropped_tokens as f64 / total_tokens as f64);
+            let pct = (dropped_tokens * 100) / total_tokens;
+            eprintln!("Warning: dropped {dropped_tokens} tokens ({pct}% of data) due to incomplete final chunk");
         }
         Self { chunks }
     }

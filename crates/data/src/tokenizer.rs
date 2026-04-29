@@ -14,6 +14,10 @@ impl CharTokenizer {
     ///
     /// Scans every character in the corpus, assigns each unique char an id,
     /// and reserves id 0 for the unknown (non-ASCII / out-of-vocab) token.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the corpus contains more than `u32::MAX - 1` unique characters.
     pub fn from_corpus<'a>(texts: impl Iterator<Item = &'a str>) -> Self {
         let mut char_to_id: HashMap<char, u32> = HashMap::new();
         let mut id_to_char: HashMap<u32, char> = HashMap::new();
