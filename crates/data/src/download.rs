@@ -4,8 +4,11 @@ use std::path::PathBuf;
 const REPO: &str = "roneneldan/TinyStories";
 const REVISION: &str = "refs/convert/parquet"; // Pin to the parquet conversion branch
 
-/// Files we expect in the dataset repository.
-const FILES: &[&str] = &["train.parquet", "validation.parquet"];
+/// Files we expect in the dataset repository (refs/convert/parquet branch).
+/// Note: TinyStories is sharded; train has 4 parts (0000-0003), validation has 1.
+/// For Phase 1, we use the first shard of each split as a representative sample.
+const TRAIN_FILE: &str = "default/train/0000.parquet";
+const VALIDATION_FILE: &str = "default/validation/0000.parquet";
 
 /// Download `TinyStories` dataset files into `cache_dir`.
 ///
@@ -29,8 +32,8 @@ pub fn pull_tinystories(cache_dir: &std::path::Path) -> Result<(PathBuf, PathBuf
 
     let dataset = api.repo(repo);
 
-    let train = dataset.get(FILES[0]).map_err(HfError::Download)?;
-    let valid = dataset.get(FILES[1]).map_err(HfError::Download)?;
+    let train = dataset.get(TRAIN_FILE).map_err(HfError::Download)?;
+    let valid = dataset.get(VALIDATION_FILE).map_err(HfError::Download)?;
 
     Ok((train, valid))
 }
