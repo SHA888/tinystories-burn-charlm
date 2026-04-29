@@ -4,12 +4,21 @@ allow = [
     "MIT",
     "Apache-2.0",
     "BSD-3-Clause",
+    "ISC",
     "MPL-2.0",
+    "Zlib",
+    "CC0-1.0",
+    "CDLA-Permissive-2.0",
+    "Unicode-3.0",
 ]
-deny = [
-    "GPL-2.0",
-    "GPL-3.0",
-    "AGPL-3.0",
+
+[advisories]
+version = 2
+ignore = [
+    # bincode 2.0.1 — transitive via burn 0.20.1; no safe upgrade available
+    { id = "RUSTSEC-2025-0141", reason = "transitive via burn 0.20.1, no safe upgrade" },
+    # paste 1.0.15 — transitive via parquet 58.1.0; no safe upgrade available
+    { id = "RUSTSEC-2024-0436", reason = "transitive via parquet 58.1.0, no safe upgrade" },
 ]
 
 [sources]

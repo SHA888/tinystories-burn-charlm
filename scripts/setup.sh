@@ -7,7 +7,7 @@ echo "Installing cargo tooling..."
 # MSRV; if it fails, the pre-commit hook falls back to `cargo test`.
 cargo install cargo-semver-checks
 cargo install --locked cargo-deny
-cargo install cargo-audit
+cargo install cargo-audit --locked
 cargo install cargo-machete
 cargo install cargo-nextest || echo "cargo-nextest failed (will use cargo test fallback)"
 

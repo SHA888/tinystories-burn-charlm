@@ -52,7 +52,7 @@ fn save_u32_bin(
     use std::io::Write;
     let mut file = std::fs::File::create(path)?;
     for i in 0..ds.len() {
-        let (inp, tgt) = ds.get_pair(i).unwrap();
+        let (inp, tgt) = ds.get_pair(i).expect("index within 0..ds.len(); get_pair must return Some");
         for &v in &inp {
             file.write_all(&v.to_le_bytes())?;
         }
