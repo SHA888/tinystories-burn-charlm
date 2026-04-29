@@ -12,7 +12,7 @@ Legend: `[ ]` open · `[x]` done · `[~]` in progress · `[!]` blocked
 
 Goal: a green CI pipeline on an empty workspace. No model code yet.
 
-- [ ] **0.1 Repository hygiene**
+- [x] **0.1 Repository hygiene**
   - [x] 0.1.1 Initialise `git` repo; first commit = these markdown files only.
   - [x] 0.1.2 Add `.gitignore` (Rust + `target/` + `.env` + `data/cache/`).
   - [x] 0.1.3 Add `.gitattributes` for line endings and LFS hints (no LFS use yet).
@@ -21,13 +21,13 @@ Goal: a green CI pipeline on an empty workspace. No model code yet.
   - [x] 0.1.6 Add `CONTRIBUTING.md` (code style, commit format, ADR process).
   - [x] 0.1.7 Add Conventional Commits convention statement to `CONTRIBUTING.md`.
 
-- [ ] **0.2 LICENSE files**
+- [x] **0.2 LICENSE files**
   - [x] 0.2.1 Add `LICENSE-MIT` (verbatim MIT text, copyright "SHA888").
   - [x] 0.2.2 Add `LICENSE-APACHE` (verbatim Apache-2.0 text, no NOTICE yet).
   - [x] 0.2.3 Reference both in every crate `Cargo.toml` (`license = "MIT OR Apache-2.0"`).
   - [ ] 0.2.4 Add `NOTICE` only if/when third-party Apache-2.0 attribution is required.
 
-- [ ] **0.3 Cargo workspace skeleton**
+- [x] **0.3 Cargo workspace skeleton**
   - [x] 0.3.1 Root `Cargo.toml` with `[workspace]` and `members = ["crates/*"]`.
   - [x] 0.3.2 `[workspace.package]` with shared `version = "0.0.1"`, `edition = "2021"`, `license`, `repository`, `rust-version` (MSRV).
   - [x] 0.3.3 `[workspace.lints]` enabling `clippy::pedantic` (selectively allow, not deny-all).
@@ -36,12 +36,12 @@ Goal: a green CI pipeline on an empty workspace. No model code yet.
   - [x] 0.3.6 Pin Burn at latest stable; verify version at write time, not from memory.
   - [x] 0.3.7 `Cargo.lock` committed (this is a binary-producing project).
 
-- [ ] **0.4 Tooling install script**
+- [x] **0.4 Tooling install script**
   - [x] 0.4.1 `scripts/setup.sh` that runs `cargo install cargo-skill cargo-semver-checks cargo-deny cargo-audit cargo-machete cargo-nextest`.
   - [x] 0.4.2 Document MSRV in `README.md` and `rust-toolchain.toml`.
   - [x] 0.4.3 Pre-commit hook (`.githooks/pre-commit`) running `fmt + clippy + nextest`.
 
-- [ ] **0.5 CI pipeline (GitHub Actions)**
+- [x] **0.5 CI pipeline (GitHub Actions)**
   - [x] 0.5.1 `.github/workflows/ci.yml` jobs: `fmt`, `clippy`, `test`, `doc`.
   - [x] 0.5.2 `.github/workflows/quality.yml` jobs: `deny`, `audit`, `machete`.
   - [x] 0.5.3 `.github/workflows/semver.yml` running `cargo-semver-checks` on PRs to `main`.
@@ -49,7 +49,7 @@ Goal: a green CI pipeline on an empty workspace. No model code yet.
   - [x] 0.5.5 Branch protection on `main`: require all checks green, 1 review, no force-push. *(Configure in GitHub repo settings.)*
   - [x] 0.5.6 Dependabot config: weekly cargo updates, grouped minor+patch.
 
-- [ ] **0.6 Quality config files**
+- [x] **0.6 Quality config files**
   - [x] 0.6.1 `deny.toml` — license allowlist (MIT, Apache-2.0, BSD-3, MPL-2.0); deny GPL/AGPL.
   - [x] 0.6.2 `clippy.toml` — cognitive complexity, MSRV.
   - [x] 0.6.3 `rustfmt.toml` — `edition = "2021"`, otherwise stdlib defaults.
