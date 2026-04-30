@@ -3,7 +3,7 @@ pub mod model;
 pub mod types;
 
 pub use config::{ConfigError, ModelConfig};
-pub use model::{CharLm, CharLmConfig};
+pub use model::CharLm;
 pub use types::{DropoutProb, EmbedDim, HeadCount, LayerCount, SeqLen, VocabSize};
 
 /// Port (trait) for tokenizers.
