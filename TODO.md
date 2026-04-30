@@ -88,11 +88,11 @@ Goal: a green CI pipeline on an empty workspace. No model code yet.
 
 ## Phase 2 — `model-core` crate (target: `v0.0.3`)
 
-- [ ] **2.1 Type foundations**
-  - [ ] 2.1.1 Newtypes: `VocabSize`, `SeqLen`, `EmbedDim`, `LayerCount`, `HeadCount`, `DropoutProb`.
-  - [ ] 2.1.2 `ModelConfig::new` validates `EmbedDim % HeadCount == 0`.
-  - [ ] 2.1.3 `ConfigError` enum (parse errors, invariant violations).
-  - [ ] 2.1.4 `serde` round-trip test on `ModelConfig`.
+- [x] **2.1 Type foundations**
+  - [x] 2.1.1 Newtypes: `VocabSize`, `SeqLen`, `EmbedDim`, `LayerCount`, `HeadCount`, `DropoutProb`.
+  - [x] 2.1.2 `ModelConfig::new` validates `EmbedDim % HeadCount == 0`.
+  - [x] 2.1.3 `ConfigError` enum (parse errors, invariant violations).
+  - [x] 2.1.4 `serde` round-trip test on `ModelConfig`.
 
 - [ ] **2.2 Model modules (Burn `Module` derive)**
   - [ ] 2.2.1 Token + positional embedding.

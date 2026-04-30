@@ -1,15 +1,10 @@
-use serde::{Deserialize, Serialize};
-use std::fmt;
+pub mod config;
+pub mod model;
+pub mod types;
 
-/// Newtype for vocabulary size, derived from observed corpus.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Hash)]
-pub struct VocabSize(pub usize);
-
-impl fmt::Display for VocabSize {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.0)
-    }
-}
+pub use config::{ConfigError, ModelConfig};
+pub use model::{CharLm, CharLmConfig};
+pub use types::{DropoutProb, EmbedDim, HeadCount, LayerCount, SeqLen, VocabSize};
 
 /// Port (trait) for tokenizers.
 ///
