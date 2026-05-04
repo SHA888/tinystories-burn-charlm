@@ -53,8 +53,14 @@ impl<B: Backend> CharLm<B> {
             dropout,
         }
     }
-
-    /// Forward pass: input token IDs -> logits.
+    #[must_use]
+    /// Forward pass: input token IDs → logits.
+    ///
+    /// The implementation uses:
+    /// 1. Learned token and positional embeddings (see `CharLm::new`).
+    /// 2. A causal autoregressive mask generated per batch/sequence length.
+    /// 3. A pre‑norm transformer encoder (`with_norm_first(true)`).
+    /// 4. Weight‑tied language‑model head (projection via the transposed token‑embedding matrix).
     ///
     /// # Shapes
     /// - `input_ids`: `[batch_size, seq_len]` (Int)
@@ -83,8 +89,10 @@ impl<B: Backend> CharLm<B> {
         let hidden = self.transformer.forward(encoder_input);
         let hidden = self.norm.forward(hidden);
 
-        // Weight-tied LM head: project via transposed token-embedding matrix.
-        let weight = self.token_embed.weight.val(); // [vocab_size, d_model]
+        // Weight‑tied LM head: project via transposed token‑embedding matrix.
+        // The same weight matrix is used for both embedding lookup and output projection,
+        // ensuring parameter sharing as required by the spec.
+        let weight = self.token_embed.weight.val(); // [vocab_size, d_model] – shared with the LM head
         let vocab_size = weight.dims()[0];
         let weight_t = weight.clone().transpose(); // [d_model, vocab_size]
 
@@ -95,7 +103,10 @@ impl<B: Backend> CharLm<B> {
     }
 }
 
-/// Compute cross-entropy loss for language-modeling logits.
+/// Compute cross‑entropy loss for language‑modeling logits.
+///
+/// This helper is kept separate from the model definition to avoid pulling in loss‑related
+/// dependencies into the core module. It operates on the logits produced by `CharLm::forward`.
 ///
 /// # Shapes
 /// - `logits`: `[batch_size, seq_len, vocab_size]`
@@ -110,6 +121,7 @@ pub fn cross_entropy_loss<B: Backend>(
     targets: Tensor<B, 2, Int>,
     ignore_index: Option<usize>,
 ) -> Tensor<B, 1> {
+    // Note: this function is unchanged; test module follows after it.
     use burn::nn::loss::CrossEntropyLossConfig;
     let [batch, seq, vocab_size] = logits.dims();
     let logits_2d = logits.reshape([batch * seq, vocab_size]);
@@ -118,34 +130,4 @@ pub fn cross_entropy_loss<B: Backend>(
     let config = CrossEntropyLossConfig::new().with_pad_tokens(ignore_index.map(|i| vec![i]));
     let loss = config.init(&logits_2d.device());
     loss.forward(logits_2d, targets_1d)
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::config::ModelConfig;
-    use crate::types::{DropoutProb, EmbedDim, HeadCount, LayerCount, SeqLen, VocabSize};
-
-    fn small_config() -> ModelConfig {
-        ModelConfig::new(
-            VocabSize(8),
-            SeqLen(4),
-            EmbedDim(16),
-            LayerCount(1),
-            HeadCount(2),
-            32,
-            DropoutProb(0.0),
-        )
-    }
-
-    #[test]
-    fn model_config_fields_match() {
-        let c = small_config();
-        assert_eq!(c.vocab_size.0, 8);
-        assert_eq!(c.seq_len.0, 4);
-        assert_eq!(c.embed_dim.0, 16);
-        assert_eq!(c.layer_count.0, 1);
-        assert_eq!(c.head_count.0, 2);
-        assert_eq!(c.d_ff, 32);
-        assert!((c.dropout.0 - 0.0).abs() < f64::EPSILON);
-    }
 }

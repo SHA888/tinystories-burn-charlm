@@ -94,12 +94,12 @@ Goal: a green CI pipeline on an empty workspace. No model code yet.
   - [x] 2.1.3 `ConfigError` enum (parse errors, invariant violations).
   - [x] 2.1.4 `serde` round-trip test on `ModelConfig`.
 
-- [ ] **2.2 Model modules (Burn `Module` derive)**
-  - [ ] 2.2.1 Token + positional embedding.
-  - [ ] 2.2.2 Multi-head causal self-attention.
-  - [ ] 2.2.3 Feed-forward (GELU).
-  - [ ] 2.2.4 Pre-norm transformer block (RMSNorm or LayerNorm — pick, document).
-  - [ ] 2.2.5 `CharLm` top module with LM head (weight-tied to token embedding).
+- [x] **2.2 Model modules (Burn `Module` derive)**
+  - [x] 2.2.1 Token + positional embedding.
+  - [x] 2.2.2 Multi-head causal self-attention.
+  - [x] 2.2.3 Feed-forward (GELU).
+  - [x] 2.2.4 Pre-norm transformer block (RMSNorm or LayerNorm — pick, document).
+  - [x] 2.2.5 `CharLm` top module with LM head (weight-tied to token embedding).
 
 - [ ] **2.3 Forward pass**
   - [ ] 2.3.1 `forward(ids) -> logits` generic over `B: Backend`.
