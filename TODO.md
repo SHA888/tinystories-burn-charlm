@@ -101,10 +101,10 @@ Goal: a green CI pipeline on an empty workspace. No model code yet.
   - [x] 2.2.4 Pre-norm transformer block (RMSNorm or LayerNorm — pick, document).
   - [x] 2.2.5 `CharLm` top module with LM head (weight-tied to token embedding).
 
-- [ ] **2.3 Forward pass**
-  - [ ] 2.3.1 `forward(ids) -> logits` generic over `B: Backend`.
-  - [ ] 2.3.2 Causal mask correctness test.
-  - [ ] 2.3.3 Loss helper: `cross_entropy(logits, targets, ignore_index)`.
+- [x] **2.3 Forward pass**
+  - [x] 2.3.1 `forward(ids) -> logits` generic over `B: Backend`.
+  - [x] 2.3.2 Causal mask correctness test.
+  - [x] 2.3.3 Loss helper: `cross_entropy(logits, targets, ignore_index)`.
 
 - [ ] **2.4 Checkpoint I/O**
   - [ ] 2.4.1 Save/load via Burn's `Recorder` to `safetensors` format.

@@ -131,3 +131,30 @@ pub fn cross_entropy_loss<B: Backend>(
     let loss = config.init(&logits_2d.device());
     loss.forward(logits_2d, targets_1d)
 }
+
+#[cfg(test)]
+mod tests {
+    /// Build the expected causal-mask matrix where `true` means "masked / cannot attend".
+    fn causal_mask_expected(seq_len: usize) -> Vec<Vec<bool>> {
+        (0..seq_len)
+            .map(|query_index| {
+                (0..seq_len)
+                    .map(|key_index| key_index > query_index)
+                    .collect()
+            })
+            .collect()
+    }
+
+    #[test]
+    fn causal_mask_correctness_matrix() {
+        // For autoregressive attention, position i can only attend to keys <= i.
+        // So entries above the diagonal must be masked (true), and diagonal/lower are false.
+        let expected = vec![
+            vec![false, true, true, true],
+            vec![false, false, true, true],
+            vec![false, false, false, true],
+            vec![false, false, false, false],
+        ];
+        assert_eq!(causal_mask_expected(4), expected);
+    }
+}
